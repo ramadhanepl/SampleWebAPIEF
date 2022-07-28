@@ -13,6 +13,7 @@ namespace SampleWebAPI.Services
         AuthenticateResponse Authenticate(AuthenticateRequest model);
         IEnumerable<User> GetAll();
         User GetById(int id);
+        //Task<User> Insert(User obj);
     }
 
     public class UserService : IUserService
