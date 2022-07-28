@@ -43,6 +43,9 @@ namespace SampleWebAPI.Profiles
 
             CreateMap<SwordTypeReadDTO, SwordType>();
             CreateMap<SwordType, SwordTypeReadDTO>();
+
+            CreateMap<UserCreateDTO, User>();
+            CreateMap<User, UserCreateDTO>();
         }
     }
 }

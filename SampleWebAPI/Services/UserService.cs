@@ -1,5 +1,7 @@
 ﻿using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
+using SampleWebAPI.Data;
+using SampleWebAPI.Domain;
 using SampleWebAPI.Helpers;
 using SampleWebAPI.Models;
 using System.IdentityModel.Tokens.Jwt;
@@ -13,7 +15,7 @@ namespace SampleWebAPI.Services
         AuthenticateResponse Authenticate(AuthenticateRequest model);
         IEnumerable<User> GetAll();
         User GetById(int id);
-        //Task<User> Insert(User obj);
+        //public Task<User> Insert(User obj);
     }
 
     public class UserService : IUserService
@@ -24,10 +26,16 @@ namespace SampleWebAPI.Services
         };
 
         private readonly AppSettings _appSettings;
+        private readonly SamuraiContext _context;
 
         public UserService(IOptions<AppSettings> appSettings)
         {
             _appSettings = appSettings.Value;
+        }
+
+        public UserService(SamuraiContext context)
+        {
+            _context = context;
         }
 
         public AuthenticateResponse Authenticate(AuthenticateRequest model)
@@ -66,6 +74,21 @@ namespace SampleWebAPI.Services
             };
             var token = tokenHandler.CreateToken(tokenDescriptor);
             return tokenHandler.WriteToken(token);
+        }
+
+        public async Task<User> Insert(User obj)
+        {
+
+            try
+            {
+                _context.Users.Add(obj);
+                await _context.SaveChangesAsync();
+                return obj;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"{ex.Message}");
+            }
         }
     }
 }

@@ -1,4 +1,6 @@
-﻿namespace SampleWebAPI.Models
+﻿using SampleWebAPI.Domain;
+
+namespace SampleWebAPI.Models
 {
     public class AuthenticateResponse
     {

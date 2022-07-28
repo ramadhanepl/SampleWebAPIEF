@@ -1,5 +1,8 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using SampleWebAPI.Domain;
+using SampleWebAPI.DTO;
 using SampleWebAPI.Models;
 using SampleWebAPI.Services;
 
@@ -9,10 +12,15 @@ namespace SampleWebAPI.Controllers
     [ApiController]
     public class UsersController : ControllerBase
     {
+        private readonly IMapper _mapper;
         private IUserService _userService;
-        public UsersController(IUserService userService)
+        private readonly UserService _userServiceDAL;
+
+        public UsersController(IUserService userService,IMapper mapper, UserService userServiceDAL)
         {
             _userService = userService;
+            _userServiceDAL = userServiceDAL;
+            _mapper = mapper;
         }
 
         [HttpPost("authenticate")]
@@ -24,6 +32,23 @@ namespace SampleWebAPI.Controllers
                 return BadRequest(new { message = "Username or password is incorrect" });
 
             return Ok(response);
+        }
+
+        [HttpPost("Register")]
+        public async Task<ActionResult> Post(UserCreateDTO userCreateDto)
+        {
+            try
+            {
+                var newUser = _mapper.Map<User>(userCreateDto);
+                var result = await _userServiceDAL.Insert(newUser);
+
+                var userReadDto = _mapper.Map<UserReadDTO>(result);
+                return CreatedAtAction("Get", new { id = result.Id }, userReadDto);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
     }
 }
