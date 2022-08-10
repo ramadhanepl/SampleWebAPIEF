@@ -23,7 +23,7 @@ namespace SampleWebAPI.Controllers
             _swordTypeDAL = swordTypeDAL;
         }
 
-        //[Authorize]
+        [Authorize]
         [HttpGet]
         public async Task<IEnumerable<SwordReadDTO>> Get()
         {
@@ -33,6 +33,7 @@ namespace SampleWebAPI.Controllers
             return swordReadDTO;
         }
 
+        [Authorize]
         [HttpGet("SwordWithElements")]
         public async Task<IEnumerable<SwordWithElementDTO>> GetSwordWithElement()
         {
@@ -43,6 +44,7 @@ namespace SampleWebAPI.Controllers
 
         }
 
+        [Authorize]
         [HttpGet("SwordWithType")]
         public async Task<IEnumerable<SwordReadDTO>> GetSwordWithType(int page)
         {
@@ -53,6 +55,7 @@ namespace SampleWebAPI.Controllers
 
         }
 
+        [Authorize]
         [HttpPost("SwordWithType")]
         public async Task<ActionResult> AddSwordWithType(AddSwordWithTypeDTO addSwordWithTypeDto)
         {
@@ -70,6 +73,7 @@ namespace SampleWebAPI.Controllers
             }
         }
 
+        [Authorize]
         [HttpPost]
         public async Task<ActionResult> Post(SwordCreateDTO swordCreateDto)
         {
@@ -87,6 +91,7 @@ namespace SampleWebAPI.Controllers
             }
         }
 
+        [Authorize]
         [HttpPut]
         public async Task<ActionResult> Put(UpdateSwordDTO swordUpdateDto)
         {
@@ -108,6 +113,7 @@ namespace SampleWebAPI.Controllers
             }
         }
 
+        [Authorize]
         [HttpPut("AddElementToExistingSword")]
         public async Task<ActionResult> Put(AddElementToExistingSwordDTO swordUpdateDto)
         {
@@ -125,6 +131,7 @@ namespace SampleWebAPI.Controllers
             }
         }
 
+        [Authorize]
         [HttpDelete("DeleteElementInSword")]
         public async Task<SwordWithElementDTO> DeleteElementInSword(int id)
         {
@@ -137,6 +144,7 @@ namespace SampleWebAPI.Controllers
 
         }
 
+        [Authorize]
         [HttpGet("{id}")]
         public async Task<SwordReadDTO> Get(int id)
         {
@@ -150,6 +158,7 @@ namespace SampleWebAPI.Controllers
 
         }
 
+        [Authorize]
         [HttpGet("ByName")]
 
         public async Task<IEnumerable<SwordReadDTO>> GetByName(string name)
@@ -161,9 +170,6 @@ namespace SampleWebAPI.Controllers
 
             return swordReadDTO;
         }
-
-       
-
 
     }
 }

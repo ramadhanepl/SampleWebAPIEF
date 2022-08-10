@@ -22,6 +22,7 @@ namespace SampleWebAPI.Controllers
             _mapper = mapper;
         }
 
+        [Authorize]
         [HttpGet]
         public async Task<IEnumerable<ElementReadDTO>> Get()
         {
@@ -43,6 +44,7 @@ namespace SampleWebAPI.Controllers
             return elementReadDTO;
         }
 
+        [Authorize]
         [HttpPost]
         public async Task<ActionResult> Post(ElementCreateDTO elementCreateDto)
         {
@@ -69,6 +71,7 @@ namespace SampleWebAPI.Controllers
             }
         }
 
+        [Authorize]
         [HttpPut]
         public async Task<ActionResult> Put(ElementUpdateDTO elementUpdateDto)
         {
@@ -89,6 +92,7 @@ namespace SampleWebAPI.Controllers
             }
         }
 
+        [Authorize]
         [HttpDelete("{id}")]
         public async Task<ActionResult> Delete(int id)
         {
@@ -104,6 +108,7 @@ namespace SampleWebAPI.Controllers
 
         }
 
+        [Authorize]
         [HttpGet("{id}")]
         public async Task<ElementReadDTO> Get(int id)
         {
@@ -121,6 +126,7 @@ namespace SampleWebAPI.Controllers
 
         }
 
+        [Authorize]
         [HttpGet("ByName")]
         public async Task<IEnumerable<ElementReadDTO>> GetByName(string name)
         {

@@ -43,7 +43,8 @@ namespace SampleWebAPI.Controllers
 
             return samuraiDTO;
         }
-        
+
+        [Authorize]
         [HttpGet("WithQuotes")]
         public async Task<IEnumerable<SamuraiWithQuotesDTO>> GetSamuraiWithQuote()
         {
@@ -72,6 +73,7 @@ namespace SampleWebAPI.Controllers
             
         }
 
+        [Authorize]
         [HttpGet("WithSwordElement")]
         public async Task<IEnumerable<SamuraiWithFullAttributeDTO>> GetSamuraiWithSwordElement()
         {
@@ -101,7 +103,7 @@ namespace SampleWebAPI.Controllers
         }
 
 
-
+        [Authorize]
         [HttpGet("{id}")]
         public async Task<SamuraiReadDTO> Get(int id)
         {
@@ -119,8 +121,8 @@ namespace SampleWebAPI.Controllers
 
         }
 
+        [Authorize]
         [HttpGet("ByName")]
-
         public async Task<IEnumerable<SamuraiReadDTO>> GetByName(string name)
         {
             //List<SamuraiReadDTO> samuraiDtos = new List<SamuraiReadDTO>();
@@ -139,6 +141,7 @@ namespace SampleWebAPI.Controllers
             return samuraiDTOs;
         }
 
+        [Authorize]
         [HttpPost]
         public async Task<ActionResult> Post(SamuraiCreateDTO samuraiCreateDto)
         {
@@ -165,6 +168,7 @@ namespace SampleWebAPI.Controllers
             }
         }
 
+
         [HttpPost("SamuraiWithSword")]
         public async Task<ActionResult> AddSamuraiWithSword(AddSamuraiWithSwordDTO addSamuraiWithSwordDto)
         {
@@ -182,7 +186,7 @@ namespace SampleWebAPI.Controllers
             }
         }
 
-
+        [Authorize]
         [HttpPut]
         public async Task<ActionResult> Put(SamuraiReadDTO samuraiDto)
         {
@@ -203,6 +207,7 @@ namespace SampleWebAPI.Controllers
             }
         }
 
+        [Authorize]
         [HttpDelete("{id}")]
         public async Task<ActionResult> Delete(int id)
         {
