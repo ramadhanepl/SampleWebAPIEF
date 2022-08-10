@@ -21,8 +21,10 @@ namespace SampleWebAPI.Profiles
             CreateMap<Sword, SwordCreateDTO>();
             CreateMap<SwordWithElementDTO, Sword>();
             CreateMap<Sword, SwordWithElementDTO>();
-            CreateMap<Sword, AddSwordToExistingElementDTO>();
-            CreateMap<AddSwordToExistingElementDTO, Sword>();
+            CreateMap<Sword, AddElementToExistingSwordDTO>();
+            CreateMap<AddElementToExistingSwordDTO, Sword>();
+            CreateMap<AddSwordWithTypeDTO, Sword>();
+            CreateMap<Sword, AddSwordWithTypeDTO>();
 
             CreateMap<Samurai, SamuraiReadDTO>();
             CreateMap<SamuraiReadDTO, Samurai>();
@@ -44,8 +46,9 @@ namespace SampleWebAPI.Profiles
             CreateMap<SwordTypeReadDTO, SwordType>();
             CreateMap<SwordType, SwordTypeReadDTO>();
 
+            CreateMap<User, UserReadDTO>();
+            CreateMap<UserReadDTO, User>();
             CreateMap<UserCreateDTO, User>();
-            CreateMap<User, UserCreateDTO>();
         }
     }
 }

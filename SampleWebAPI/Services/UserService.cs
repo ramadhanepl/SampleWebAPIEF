@@ -12,33 +12,28 @@ namespace SampleWebAPI.Services
 {
     public interface IUserService
     {
-        AuthenticateResponse Authenticate(AuthenticateRequest model);
-        IEnumerable<User> GetAll();
+        //AuthenticateResponse Authenticate(AuthenticateRequest model);
+        //IEnumerable<User> GetAll();
+        AuthenticateResponse Login(AuthenticateRequest model);
         User GetById(int id);
-        //public Task<User> Insert(User obj);
     }
-
     public class UserService : IUserService
     {
-        private List<User> _users = new List<User>
+        /*private List<User> _users = new List<User>
         {
             new User { Id = 1, FirstName = "Test", LastName = "User", Username = "test", Password = "test" }
-        };
+        };*/
 
         private readonly AppSettings _appSettings;
         private readonly SamuraiContext _context;
 
-        public UserService(IOptions<AppSettings> appSettings)
+        public UserService(IOptions<AppSettings> appSettings,SamuraiContext context)
         {
             _appSettings = appSettings.Value;
-        }
-
-        public UserService(SamuraiContext context)
-        {
             _context = context;
         }
 
-        public AuthenticateResponse Authenticate(AuthenticateRequest model)
+        /*public AuthenticateResponse Authenticate(AuthenticateRequest model)
         {
             var user = _users.SingleOrDefault(x => x.Username == model.Username && x.Password == model.Password);
 
@@ -49,16 +44,21 @@ namespace SampleWebAPI.Services
             var token = generateJwtToken(user);
 
             return new AuthenticateResponse(user, token);
-        }
+        }*/
 
-        public IEnumerable<User> GetAll()
+        public AuthenticateResponse Login(AuthenticateRequest model)
         {
-            return _users;
+            var user = _context.Users.SingleOrDefault(u => u.Username == model.Username && u.Password == model.Password);
+            if (user == null) return null;
+
+            var token = generateJwtToken(user);
+            return new AuthenticateResponse(user, token);
         }
 
         public User GetById(int id)
         {
-            return _users.FirstOrDefault(x => x.Id == id);
+            var userLogin = _context.Users.FirstOrDefault(x => x.Id == id);
+            return userLogin;
         }
 
         private string generateJwtToken(User user)
@@ -74,21 +74,6 @@ namespace SampleWebAPI.Services
             };
             var token = tokenHandler.CreateToken(tokenDescriptor);
             return tokenHandler.WriteToken(token);
-        }
-
-        public async Task<User> Insert(User obj)
-        {
-
-            try
-            {
-                _context.Users.Add(obj);
-                await _context.SaveChangesAsync();
-                return obj;
-            }
-            catch (Exception ex)
-            {
-                throw new Exception($"{ex.Message}");
-            }
         }
     }
 }

@@ -15,5 +15,10 @@ namespace SampleWebAPI.Domain
         public int SamuraiId { get; set; }
         public List<Element> Elements { get; set; } = new List<Element>();
         public SwordType SwordType { get; set; }
+
+        /*public static implicit operator Sword(Sword v)
+        {
+            throw new NotImplementedException();
+        }*/
     }
 }

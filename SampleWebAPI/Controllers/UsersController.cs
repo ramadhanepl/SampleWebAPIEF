@@ -1,8 +1,10 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using SampleWebAPI.Data.DAL;
 using SampleWebAPI.Domain;
 using SampleWebAPI.DTO;
+using SampleWebAPI.Helpers;
 using SampleWebAPI.Models;
 using SampleWebAPI.Services;
 
@@ -13,20 +15,31 @@ namespace SampleWebAPI.Controllers
     public class UsersController : ControllerBase
     {
         private readonly IMapper _mapper;
-        private IUserService _userService;
-        private readonly UserService _userServiceDAL;
+        private readonly IUser _userDAL;
+        private readonly IUserService _userService;
 
-        public UsersController(IUserService userService,IMapper mapper, UserService userServiceDAL)
+        public UsersController(IUserService userService, IMapper mapper, IUser UserDAL)
         {
-            _userService = userService;
-            _userServiceDAL = userServiceDAL;
             _mapper = mapper;
+            _userDAL = UserDAL;
+            _userService = userService;
         }
 
-        [HttpPost("authenticate")]
+        [Authorize]
+        [HttpGet]
+        public async Task<IEnumerable<UserReadDTO>> Get()
+        {
+            var results = await _userDAL.GetAll();
+
+            var userReadDto = _mapper.Map<IEnumerable<UserReadDTO>>(results);
+
+            return userReadDto;
+        }
+
+        [HttpPost("Login")]
         public IActionResult Authenticate(AuthenticateRequest model)
         {
-            var response = _userService.Authenticate(model);
+            var response = _userService.Login(model);
 
             if (response == null)
                 return BadRequest(new { message = "Username or password is incorrect" });
@@ -35,20 +48,21 @@ namespace SampleWebAPI.Controllers
         }
 
         [HttpPost("Register")]
-        public async Task<ActionResult> Post(UserCreateDTO userCreateDto)
+        public async Task<ActionResult> Post(UserCreateDTO userCreateDTO)
         {
             try
             {
-                var newUser = _mapper.Map<User>(userCreateDto);
-                var result = await _userServiceDAL.Insert(newUser);
-
-                var userReadDto = _mapper.Map<UserReadDTO>(result);
-                return CreatedAtAction("Get", new { id = result.Id }, userReadDto);
+                var NewUser = _mapper.Map<User>(userCreateDTO);
+                var result = await _userDAL.Insert(NewUser);
+                var ReadData = _mapper.Map<UserReadDTO>(result);
+                return CreatedAtAction("Get", new { Id = result.Id }, ReadData);
             }
             catch (Exception ex)
             {
+
                 return BadRequest(ex.Message);
             }
+
         }
     }
 }

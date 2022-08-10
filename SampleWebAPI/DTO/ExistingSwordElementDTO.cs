@@ -1,6 +1,6 @@
 ﻿namespace SampleWebAPI.DTO
 {
-    public class SwordToExistingElementDTO
+    public class ExistingSwordElementDTO
     {
         public int Id { get; set; }
     }

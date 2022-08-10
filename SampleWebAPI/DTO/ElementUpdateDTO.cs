@@ -1,8 +1,8 @@
 ﻿namespace SampleWebAPI.DTO
 {
-    public class ElementReadDTO
+    public class ElementUpdateDTO
     {
-        //public int Id { get; set; }
+        public int Id { get; set; }
         public string ElementType { get; set; }
     }
 }

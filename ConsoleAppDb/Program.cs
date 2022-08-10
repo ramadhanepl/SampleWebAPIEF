@@ -33,15 +33,16 @@ Console.WriteLine($"{samurai.Id} - {samurai.Name}");*/
 //AddHorseToExistingSamurai();
 //GetSamurai();
 //AddSword();
-//AddSwordToExistingSamurai();
+AddSwordToExistingSamurai();
 //DeleteSword(6);
-//GetSamuraiWithSword();
+GetSamuraiWithSword();
 //AddElement("Fire", "Water", "Earth", "Lightning", "Mist", "Sound", "Poison", "Beast");
 //GetElement();
-//UpdateSword(9, 1.5);
+//UpdateSword(43, 1.6);
+
 //GetSword();
 //AddElementToExistingSword();
-GetSwordWithElement();
+//GetSwordWithElement();
 //AddSwordStyleToExistingSword();
 //GetSwordWithSwordStyle();
 //GetQuotes();
@@ -149,8 +150,8 @@ void AddSword()
 {
     var sword = new Sword
     {
-        SwordName = "God Lightning",
-        SamuraiId = 9
+        SwordName = "Katana 6",
+        SamuraiId = 16
     };
     _context.Swords.Add(sword);
     _context.SaveChanges();
@@ -174,7 +175,7 @@ void GetSword()
 }
 void AddSwordToExistingSamurai()
 {
-    var samurai = _context.Samurais.Find(13);
+    /*var samurai = _context.Samurais.Find(13);
     if (samurai != null)
     {
         samurai.Swords.Add(new Sword { SwordName = "Taiyo No Kami" });
@@ -185,11 +186,11 @@ void AddSwordToExistingSamurai()
     {
         samurai2.Swords.Add(new Sword { SwordName = "Murasaki No Cho" });
         _context.SaveChanges();
-    }
+    }*/
     var samurai3 = _context.Samurais.Find(18);
     if (samurai3 != null)
     {
-        samurai3.Swords.Add(new Sword { SwordName = "Mizu No Ikari" });
+        samurai3.Swords.Add(new Sword { SwordName = "Wooden Sword" });
         _context.SaveChanges();
     }
 }
@@ -390,8 +391,8 @@ void GetSwordWithElement()
 // Sword Style
 void AddSwordStyleToExistingSword()
 {
-    var sword = _context.Swords.FirstOrDefault(s => s.Id == 9 );
-    sword.SwordType = new SwordType { Style = "Long Sword" };
+    var sword = _context.Swords.FirstOrDefault(s => s.Id == 41 );
+    sword.SwordType = new SwordType { Style = "Dagger" };
     _context.SaveChanges();
 }
 void GetSwordWithSwordStyle()

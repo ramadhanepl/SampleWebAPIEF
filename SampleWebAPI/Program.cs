@@ -26,8 +26,8 @@ builder.Services.AddScoped<IQuote, QuoteDAL>();
 builder.Services.AddScoped<ISword, SwordDAL>();
 builder.Services.AddScoped<IElement, ElementDAL>();
 builder.Services.AddScoped<ISwordType, SwordTypeDAL>();
-builder.Services.AddScoped<IUserService, UserService>()
-;
+builder.Services.AddScoped<IUser, UserDAL>();
+
 // configure strongly typed settings object
 builder.Services.Configure<AppSettings>(builder.Configuration.GetSection("AppSettings"));
 

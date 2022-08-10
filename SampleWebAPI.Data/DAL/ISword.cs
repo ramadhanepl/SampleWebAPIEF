@@ -11,8 +11,10 @@ namespace SampleWebAPI.Data.DAL
     {
         Task<IEnumerable<Sword>> GetBySwordName(string swordName);
         Task<IEnumerable<Sword>> GetSwordWithElement();
-        Task<SwordType> AddSwordWithType(SwordType obj);
-        Task<Element> AddSwordToExistingElement(Sword obj);
+        Task<IEnumerable<Sword>> GetSwordWithType(int page);
+        Task<Sword> AddSwordWithType(Sword obj);
+        Task<Sword> AddElementToExistingSword(Sword obj);
+        Task<Sword> DeleteElementInSword(int id);
 
 
     }

@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using SampleWebAPI.Data.DAL;
 using SampleWebAPI.Domain;
 using SampleWebAPI.DTO;
+using SampleWebAPI.Helpers;
 
 namespace SampleWebAPI.Controllers
 {
@@ -22,28 +23,17 @@ namespace SampleWebAPI.Controllers
             _swordTypeDAL = swordTypeDAL;
         }
 
+        //[Authorize]
         [HttpGet]
         public async Task<IEnumerable<SwordReadDTO>> Get()
         {
-            //List<SamuraiReadDTO> samuraiDTO = new List<SamuraiReadDTO>();
-
             var results = await _swordDAL.GetAll();
-            /*foreach (var result in results)
-            {
-                samuraiDTO.Add(new SamuraiReadDTO
-                {
-                    Id = result.Id,
-                    Name = result.Name
-                });
-            }*/
-
-            // Auto Mapper
             var swordReadDTO = _mapper.Map<IEnumerable<SwordReadDTO>>(results);
 
             return swordReadDTO;
         }
 
-        [HttpGet("WithElements")]
+        [HttpGet("SwordWithElements")]
         public async Task<IEnumerable<SwordWithElementDTO>> GetSwordWithElement()
         {
             var results = await _swordDAL.GetSwordWithElement();
@@ -51,6 +41,33 @@ namespace SampleWebAPI.Controllers
            
             return swordWithElementDtos;
 
+        }
+
+        [HttpGet("SwordWithType")]
+        public async Task<IEnumerable<SwordReadDTO>> GetSwordWithType(int page)
+        {
+            var results = await _swordDAL.GetSwordWithType(page);
+            var swordWithTypeDtos = _mapper.Map<IEnumerable<SwordReadDTO>>(results);
+
+            return swordWithTypeDtos;
+
+        }
+
+        [HttpPost("SwordWithType")]
+        public async Task<ActionResult> AddSwordWithType(AddSwordWithTypeDTO addSwordWithTypeDto)
+        {
+            try
+            {
+                var newSamurai = _mapper.Map<Sword>(addSwordWithTypeDto);
+                var result = await _swordDAL.AddSwordWithType(newSamurai);
+
+                var swordReadDto = _mapper.Map<SwordReadDTO>(result);
+                return CreatedAtAction("Get", new { id = result.Id }, swordReadDto);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
         [HttpPost]
@@ -71,14 +88,15 @@ namespace SampleWebAPI.Controllers
         }
 
         [HttpPut]
-        public async Task<ActionResult> Put(SwordReadDTO swordUpdateDto)
+        public async Task<ActionResult> Put(UpdateSwordDTO swordUpdateDto)
         {
             try
             {
                 var updateSword = new Sword
                 {
                     Id = swordUpdateDto.Id,
-                    SwordName = swordUpdateDto.SwordName
+                    SwordName = swordUpdateDto.SwordName,
+                    Weight = swordUpdateDto.Weight
                 };
                 var result = await _swordDAL.Update(updateSword);
                 return Ok(updateSword);
@@ -90,22 +108,34 @@ namespace SampleWebAPI.Controllers
             }
         }
 
-        [HttpDelete("{id}")]
-        public async Task<ActionResult> Delete(int id)
+        [HttpPut("AddElementToExistingSword")]
+        public async Task<ActionResult> Put(AddElementToExistingSwordDTO swordUpdateDto)
         {
             try
             {
-                await _swordDAL.Delete(id);
-                return Ok($"Data Sword dengan id {id} berhasil didelete");
+                var updateSword = _mapper.Map<Sword>(swordUpdateDto);
+                var result = await _swordDAL.Insert(updateSword);
+
+                return Ok(updateSword);
             }
             catch (Exception ex)
             {
                 return BadRequest(ex.Message);
-            }
 
+            }
         }
 
+        [HttpDelete("DeleteElementInSword")]
+        public async Task<SwordWithElementDTO> DeleteElementInSword(int id)
+        {
+            var result = await _swordDAL.DeleteElementInSword(id);
+            if (result == null) throw new Exception($"data {id} tidak ditemukan");
 
+            var swordReadDTO = _mapper.Map<SwordWithElementDTO>(result);
+
+            return swordReadDTO;
+
+        }
 
         [HttpGet("{id}")]
         public async Task<SwordReadDTO> Get(int id)
@@ -132,22 +162,7 @@ namespace SampleWebAPI.Controllers
             return swordReadDTO;
         }
 
-        [HttpPost("SwordToExistingElement")]
-        public async Task<ActionResult> AddSwordToExistingElement(AddSwordToExistingElementDTO addSwordToExistingElement)
-        {
-            try
-            {
-                var newSword = _mapper.Map<Sword>(addSwordToExistingElement);
-                var result = await _swordDAL.AddSwordToExistingElement(newSword);
-
-                var swordReadDto = _mapper.Map<SwordReadDTO>(result);
-                return CreatedAtAction("Get", new { id = result.Id }, swordReadDto);
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
-        }
+       
 
 
     }

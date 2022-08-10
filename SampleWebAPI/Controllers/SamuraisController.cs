@@ -22,6 +22,7 @@ namespace SampleWebAPI.Controllers
             _mapper = mapper;
         }
 
+        [Authorize]
         [HttpGet]
         public async Task<IEnumerable<SamuraiReadDTO>> Get()
         {
@@ -169,7 +170,6 @@ namespace SampleWebAPI.Controllers
         {
             try
             {
-
                 var newSamurai = _mapper.Map<Samurai>(addSamuraiWithSwordDto);
                 var result = await _samuraiDAL.AddSamuraiWithSword(newSamurai);
 
